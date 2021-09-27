@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        <input type="text" id='name'>
+        <input type="button" value="Submit" onclick="onSubmit()">
+    </form>
+    <br>
+    <br>
+    <table border="1px;">
+        <th>S.No.</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <tbody id="htmlBody"></tbody>
+        
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        getTable();
+        var u_id = "";
+        function onSubmit(){
+            var data = [];
+            var name = $('#name').val();
+            if(name == ""){
+                alert('Name is required');
+            }else{
+                
+                if(u_id == ""){
+                    var arr1 = [];
+                    arr1 = crudArr() == null ? []:crudArr();
+                    if(arr1.length == 0){
+                        data = [name];
+                        localStorage.setItem('crud',JSON.stringify(data));
+                    }else{
+                        arr1.push(name);
+                        localStorage.setItem('crud',JSON.stringify(arr1));
+                    }
+                    $('#name').val('');
+                    getTable();
+                }else{
+
+                    var arr1 = crudArr() == null ? []:crudArr();
+                    arr1[u_id] = name;
+                    localStorage.setItem('crud',JSON.stringify(arr1));
+                    getTable();
+                }
+                
+                
+            }
+        }
+
+        function getTable(){
+            var arr2 = crudArr();
+            var html = "";
+            var s = 1;
+            var t = 0;
+            for(var i=0;i<=arr2.length;i++){
+                html += '<tr><td>'+t+'</td><td>'+arr2[i]+'</td><td><a href="javascript:void(0)" onclick="editData('+t+')">Edit</a></td><td><a href="javascript:void(0)" onclick="deleteData('+t+')">Delete</a></td></tr>';
+                s++;
+                t++;
+            }
+            $('#htmlBody').html(html);
+        }
+
+        function crudArr(){
+            var arr = JSON.parse(localStorage.getItem('crud'));
+            return arr;
+        }
+        function deleteData(id){
+            var arr2 = crudArr();
+            arr2.splice(id,1);
+            localStorage.setItem('crud',JSON.stringify(arr2));
+            getTable();
+        }
+
+        function editData(id){
+            u_id = id;
+            var arr2 = crudArr();
+            $('#name').val(arr2[id]);
+            
+        }
+    </script>
+</body>
+</html>
