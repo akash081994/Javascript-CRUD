@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            margin: auto;
+            width: 60%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Create a Simple Todo list using JavaScript        </h1>
+        <ul id="box"></ul>
+        <input type="text" name="name" id="name">
+        <button type="submit" onclick="addName()">Add</button>
+        <br>
+        <br>
+        <span id="error" style="color:rgb(133, 11, 62)"></span>
+    </div>
+    <script>
+        function addName(){
+            let name = document.getElementById('name').value;
+            if(name == ''){
+                document.getElementById('error').textContent='Please enter your name';
+            }else{
+                let box = document.getElementById('box');
+                let li = document.createElement('li');
+                li.textContent = name;
+                let a = document.createElement('a');
+                a.href = 'javascript:void(0)';
+                a.textContent = 'Remove element';
+                a.className = 'aclass';
+                li.appendChild(a);
+                let position = box.firstElementChild;console.log(position);
+                if(position == null){
+                    box.appendChild(li);
+                }else{
+                    box.insertBefore(li,position);
+                }
+                document.getElementById('name').value = "";
+                
+            }
+        }
+
+        let rmElement = document.querySelector('ul');
+        rmElement.addEventListener('click',function(e){
+            let box1 = document.getElementById('box');
+            let li1 = e.target.parentNode;
+            console.log(li1);
+            box1.removeChild(li1);
+        });
+        
+
+    </script>
+</body>
+</html>
